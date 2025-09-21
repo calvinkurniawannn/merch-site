@@ -18,10 +18,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'username',
+        'password',
         'name',
         'email',
-        'password',
+        'phone',
+        'address',
+        'role',
+        'seller_account_id',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,4 +48,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function sellerAccount()
+    {
+        return $this->belongsTo(SellerAccount::class);
+    }
+
+    public $timestamps = false;
 }

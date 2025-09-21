@@ -11,35 +11,33 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seller_accounts', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
 
-            // basic store identity
-            $table->string('account_code')->unique();
-            $table->string('store_name');
-            $table->string('logo')->nullable(); // path/logo image
-            $table->string('theme_color')->nullable();
+            $table->string('image');       
+            $table->string('name');         
+            $table->text('description');    
+            $table->decimal('price', 12, 2); 
+            $table->integer('quantity');
 
-            // optional info about seller
-            $table->string('contact_email')->nullable();
-            $table->string('contact_phone')->nullable();
+            $table->unsignedBigInteger('seller_account_id')->nullable();
+            $table->foreign('seller_account_id')
+                ->references('id')->on('seller_accounts')
+                ->onDelete('cascade');
 
             $table->string('modified_by')->nullable();
             $table->timestamp('modified_date')->nullable();
             $table->string('created_by');
             $table->timestamp('created_date');
 
-            // audit info
-            $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('seller_accounts');
+        Schema::dropIfExists('products');
     }
 };

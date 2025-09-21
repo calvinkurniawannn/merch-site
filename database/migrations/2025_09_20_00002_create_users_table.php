@@ -14,28 +14,37 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
 
+            // login identity
+            $table->string('username')->unique(); // tambah username
+            $table->string('password')->nullable(); // guest bisa null
+
             // basic info
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->nullable(); // guest bisa null
 
             // role system
             $table->enum('role', ['guest', 'user', 'admin_seller'])->default('user');
 
-            // profile info (for customer/user autofill)
+            // profile info
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
 
             // if user is admin_seller, link to seller_account
             $table->unsignedBigInteger('seller_account_id')->nullable();
             $table->foreign('seller_account_id')
-                ->references('id')->on('seller_accounts')
-                ->onDelete('cascade');
+            ->references('id')->on('seller_accounts')
+            ->onDelete('cascade');
+
+            // audit fields
+            $table->string('modified_by')->nullable();
+            $table->timestamp('modified_date')->nullable();
+            $table->string('created_by');
+            $table->timestamp('created_date');
 
             $table->rememberToken();
-            $table->timestamps();
-        });
+            });
+
     }
 
 
