@@ -8,6 +8,8 @@
         </ul>
     @endif
 
+    <input type="hidden" name="store_id" value="{{ $store->id }}" required>
+
     <label>Username:</label><br>
     <input type="text" name="username" value="{{ old('username') }}" required><br><br>
 
@@ -27,5 +29,5 @@
     <textarea name="address">{{ old('address') }}</textarea><br><br>
 
     <button type="submit">Sign Up</button>
-    <a href="{{ route('login.page') }}">Udah punya akun? Login!</a>
+    <a href="{{ route('login.page', ['account_code' => $store->account_code]) }}">Udah punya akun? Login!</a>
 </form>

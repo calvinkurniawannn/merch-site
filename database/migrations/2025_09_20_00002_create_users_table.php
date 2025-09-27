@@ -31,9 +31,9 @@ return new class extends Migration
             $table->string('address')->nullable();
 
             // if user is admin_seller, link to seller_account
-            $table->unsignedBigInteger('seller_account_id')->nullable();
-            $table->foreign('seller_account_id')
-            ->references('id')->on('seller_accounts')
+            $table->unsignedBigInteger('store_id')->nullable();
+            $table->foreign('store_id')
+            ->references('id')->on('stores')
             ->onDelete('cascade');
 
             // audit fields

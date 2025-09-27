@@ -5,16 +5,16 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\SellerAccount;
+use App\Models\Store;
 
-class SellerAccountSeeder extends Seeder
+class StoreSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        SellerAccount::create([
+        Store::create([
             'account_code'=> 'calvinstore',
             'store_name'    => 'Calvin Official Store',
             'logo'          => 'logos/calvin.png',
@@ -26,7 +26,7 @@ class SellerAccountSeeder extends Seeder
                 'created_by' => 'system',
                 'created_date' => now(),
         ]);
-                SellerAccount::create([
+                Store::create([
             'account_code'=> 'seica',
             'store_name'    => 'Seica',
             'logo'          => 'logos/calvin.png',

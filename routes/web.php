@@ -7,20 +7,9 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/{account_code}', [RoutingController::class, 'view_LoginPage'])
+    ->name('login.page');
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-Route::get('/login-seller', [RoutingController::class, 'view_LoginPageSeller'])->name('login.page.seller');
-
-Route::get('/login', [RoutingController::class, 'view_LoginPage'])->name('login.page');
 
 Route::get('/', function () {
     return redirect()->route('login.page');
@@ -28,32 +17,30 @@ Route::get('/', function () {
 
 
 // AUTHORIZATION
-Route::post('/login-seller', [AuthController::class, 'login_seller'])->name('login.seller.post');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/{account_code}/signup', [RoutingController::class, 'view_SignUp'])->name('signup.page');
 
-Route::get('/signup', [RoutingController::class, 'view_SignUp'])->name('signup.page');
+Route::post('/login-post', [AuthController::class, 'login'])->name('login.post');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::post('/signup', [AuthController::class, 'signup'])->name('signup.post');
 
 
 // DASHBOARD SELLER
 Route::middleware(['role:admin_seller'])->group(function () {
-    Route::get('/dashboard-home-seller', [SellerController::class, 'view_HomeSeller'])->name('dashboard.home.seller');
-    Route::get('/products', [SellerController::class, 'view_Product'])->name('seller.products');
+    Route::get('/{account_code}/dashboard-seller', [SellerController::class, 'view_HomeSeller'])->name('dashboard.home.seller');
+    Route::get('/{account_code}/products', [SellerController::class, 'view_Product'])->name('seller.products');
 
-    // ambil data product (JSON) untuk modal edit
-    Route::get('/products/{id}/json', [SellerController::class, 'get_ProductJson'])->name('products.json');
+    Route::get('/{account_code}/products/{slug}/edit-page', [ProductController::class, 'edit_Product'])
+        ->name('products.editPage');
 
-    // update
-    Route::put('/products/{id}', [SellerController::class, 'update_Product'])->name('products.update');
+    Route::put('/{account_code}/products/{slug}', [ProductController::class, 'update_Product'])
+        ->name('products.update');
 
-    // delete
-    Route::delete('/products/{id}', [SellerController::class, 'delete_Product'])->name('products.destroy');
+        // delete
+        Route::delete('/products/{slug}', [SellerController::class, 'delete_Product'])->name('products.destroy');
 });
 
-
-
 Route::middleware(['role:user'])->group(function () {
-    Route::get('/dashboard-home-user', [UserController::class, 'view_HomeUser'])->name('dashboard.home.user');
+    Route::get('/{account_code}/dashboard-user', [UserController::class, 'view_HomeUser'])->name('dashboard.home.user');
 });

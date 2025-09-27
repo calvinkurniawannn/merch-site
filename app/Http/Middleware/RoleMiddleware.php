@@ -15,17 +15,32 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
         $user = Auth::user();
+        $account_code = $request->route('account_code');
 
-        // Kalau belum login → lempar ke login
+        // Kalau belum login
         if (!$user) {
-            return redirect()->route('login.page.seller');
+            if ($account_code) {
+                return redirect()->route('login.page', ['account_code' => $account_code]);
+            }
+            return redirect()->route('home');
         }
 
-        // Kalau role user tidak ada di daftar roles → abort 404
+        // Kalau role tidak sesuai
         if (!in_array($user->role, $roles)) {
-            abort(404);
+            abort(403, 'Unauthorized');
+        }
+
+        // ✅ Tambahin check store
+        if ($account_code) {
+            $store = \App\Models\Store::where('account_code', $account_code)->firstOrFail();
+
+            // cek apakah user login punya store yang sama
+            if ($user->store_id !== $store->id) {
+                abort(403, 'No Access');
+            }
         }
 
         return $next($request);
     }
+
 }

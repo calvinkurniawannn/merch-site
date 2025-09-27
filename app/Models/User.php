@@ -25,7 +25,11 @@ class User extends Authenticatable
         'phone',
         'address',
         'role',
-        'seller_account_id',
+        'store_id',
+        'created_by',
+        'modified_by',
+        'created_date',
+        'modified_date'
     ];
 
 
@@ -49,9 +53,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function sellerAccount()
+    public function Store()
     {
-        return $this->belongsTo(SellerAccount::class);
+        return $this->belongsTo(Store::class);
     }
 
     public $timestamps = false;

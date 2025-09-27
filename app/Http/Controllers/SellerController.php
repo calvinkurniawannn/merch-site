@@ -2,62 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\Store;
 use App\Models\Product;
-use App\Models\SellerAccount;
 use Illuminate\Http\Client\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class SellerController extends Controller
 {
-    public function view_HomeSeller()
+    public function view_HomeSeller($account_code)
     {
-        $user  = Auth::user();
-        $seller = \App\Models\SellerAccount::find($user->seller_account_id);
+        $user   = Auth::user();
+        $store = Store::where('account_code', $account_code)->first();
 
-        return view('dashboard.home-seller', compact('user', 'seller'));
+        if (!$store || $store->id !== $user->store_id) {
+            abort(403, '404 No Access');
+        }
+
+        return view('dashboard.home-seller', compact('user', 'store'));
     }
 
-    public function view_Product(){
-        $products = \App\Models\Product::all();
-        return view('seller.product',compact('products'));
-    }
-
-    public function get_ProductJson($id)
+    public function view_Product($account_code)
     {
-        $product = \App\Models\Product::findOrFail($id);
-        return response()->json($product);
+        $store = Store::where('account_code', $account_code)->firstOrFail();
+
+        $products = Product::where('store_id', $store->id)->get();
+
+        return view('seller.product', compact('products', 'store'));
     }
 
-    
-public function update_Product(Request $request, $id)
-{
-    $request->validate([
-        'name'        => 'required|string|max:255',
-        'description' => 'required|string',
-        'price'       => 'required|numeric|min:0',
-        'quantity'    => 'required|integer|min:0',
-    ]);
-
-    $product = \App\Models\Product::findOrFail($id);
-
-    $product->update([
-        'name'         => $request->input('name'),
-        'description'  => $request->input('description'),
-        'price'        => $request->input('price'),
-        'quantity'     => $request->input('quantity'),
-        'modified_by'  => auth()->user()->name,
-        'modified_date'=> now(),
-    ]);
+    // ======================== DONE
 
 
-    // kembalikan JSON supaya bisa di-handle di JS
-    return response()->json([
-        'status'  => 'success',
-        'message' => 'Product updated successfully',
-        'product' => $product
-    ]);
-}
 
 
 

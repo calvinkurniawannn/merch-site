@@ -16,11 +16,12 @@ class ProductSeeder extends Seeder
                 'description' => 'Noise-cancelling over-ear headphones with 30 hours of battery life.',
                 'price' => 1250000.00,
                 'quantity' => 15,
-                'seller_account_id' => 1,
+                'store_id' => 1,
                 'modified_by' => 'system',
                 'modified_date' => now(),
                 'created_by' => 'system',
                 'created_date' => now(),
+                'slug'=>'asdkjasdjadka123123'
             ],
             [
                 'image' => 'images/products/backpack.jpg',
@@ -28,11 +29,12 @@ class ProductSeeder extends Seeder
                 'description' => 'Durable leather backpack with laptop compartment, perfect for work or travel.',
                 'price' => 850000.00,
                 'quantity' => 25,
-                'seller_account_id' => 1,
+                'store_id' => 1,
                 'modified_by' => 'system',
                 'modified_date' => now(),
                 'created_by' => 'system',
                 'created_date' => now(),
+                'slug'=>'adnsandsad8asd8sa8'
             ],
             [
                 'image' => 'images/products/smartwatch.jpg',
@@ -40,11 +42,12 @@ class ProductSeeder extends Seeder
                 'description' => 'Water-resistant smartwatch with heart-rate monitor and fitness tracking.',
                 'price' => 1750000.00,
                 'quantity' => 10,
-                'seller_account_id' => 1,
+                'store_id' => 1,
                 'modified_by' => 'system',
                 'modified_date' => now(),
                 'created_by' => 'system',
                 'created_date' => now(),
+                'slug'=>'askdajkda88181818'
             ],
         ]);
     }

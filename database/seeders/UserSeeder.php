@@ -21,7 +21,7 @@ class UserSeeder extends Seeder
             'role' => 'admin_seller',
             'phone' => '08123456789',
             'address' => 'Jakarta',
-            'seller_account_id' => 1,
+            'store_id' => 1,   
                             'modified_by' => 'system',
                 'modified_date' => now(),
                 'created_by' => 'system',
@@ -35,11 +35,25 @@ class UserSeeder extends Seeder
             'role' => 'admin_seller',
             'phone' => '08123456789',
             'address' => 'Jakarta',
-            'seller_account_id' => 2, 
+            'store_id' => 2, 
                             'modified_by' => 'system',
                 'modified_date' => now(),
                 'created_by' => 'system',
                 'created_date' => now(),
+        ]);
+        User::create([
+            'name' => 'andre',
+            'username'=> 'andre',
+            'email' => 'andre@example.com',
+            'password' => Hash::make('andre'),
+            'role' => 'user',
+            'phone' => '08123456789',
+            'address' => 'Jakarta',
+            'store_id' => 1, 
+            'modified_by' => 'system',
+            'modified_date' => now(),
+            'created_by' => 'system',
+            'created_date' => now(),
         ]);
 
         

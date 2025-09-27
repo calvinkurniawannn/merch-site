@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SellerAccount extends Model
+class Store extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -14,4 +14,10 @@ class SellerAccount extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+
 }

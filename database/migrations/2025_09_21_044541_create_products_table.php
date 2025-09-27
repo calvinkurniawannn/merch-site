@@ -20,15 +20,18 @@ return new class extends Migration
             $table->decimal('price', 12, 2); 
             $table->integer('quantity');
 
-            $table->unsignedBigInteger('seller_account_id')->nullable();
-            $table->foreign('seller_account_id')
-                ->references('id')->on('seller_accounts')
+            $table->unsignedBigInteger('store_id')->nullable();
+            $table->foreign('store_id')
+                ->references('id')->on('stores')
                 ->onDelete('cascade');
 
             $table->string('modified_by')->nullable();
             $table->timestamp('modified_date')->nullable();
             $table->string('created_by');
             $table->timestamp('created_date');
+
+            $table->string('slug')->nullable();
+
 
         });
     }

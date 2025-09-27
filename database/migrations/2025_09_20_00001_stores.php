@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seller_accounts', function (Blueprint $table) {
+        Schema::create('stores', function (Blueprint $table) {
             $table->id();
 
             // basic store identity

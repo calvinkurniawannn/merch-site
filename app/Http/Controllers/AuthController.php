@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Store;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use App\Models\SellerAccount;
 
 class AuthController extends Controller
 {
     public function signup(Request $request)
     {
         $request->validate([
+        'store_id' => 'integer|exists:stores,id',
         'username' => 'required|string|unique:users',
         'password' => 'required|string|min:6',
         'name'     => 'required|string',
@@ -24,88 +26,69 @@ class AuthController extends Controller
         
         $user = User::create([
             'username' => $request->username,
-            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+            'password' => Hash::make($request->password),
             'name'     => $request->name,
             'email'    => $request->email,
             'phone'    => $request->phone,
             'address'  => $request->address,
             'role'     => 'user',
-            'seller_account_id' => null, // default null, bisa diisi kalau ada
+            'store_id' => $request->store_id,
+            'created_by' => $request->username,
+            'created_date'=> now(),
+            'modified_by' => $request->username,
+            'modified_date'=> now()
         ]);
+
+        $store = Store::find($user->store_id);
+
 
         // login otomatis setelah signup
         Auth::login($user);
 
-        return redirect()->route('login.page');
+        return redirect()->route('login.page',['account_code' => $store->account_code]);
     }
     public function login(Request $request)
     {
         $request->validate([
             'username' => 'required|string',
+            'store_id' => 'required|integer|exists:stores,id',
             'password' => 'required|string',
         ]);
 
-        // cari user berdasarkan username + seller_account_id
-        $user = User::where('username', $request->username)
-                    ->first();
+        $user = User::where([
+            ['username', $request->username],
+            ['store_id', $request->store_id],
+        ])->first();
 
-        // cek user + password
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->with('error', 'Invalid credentials');
         }
 
-        // login manual pakai Auth
         Auth::login($user);
+        $store = Store::find($user->store_id);
 
-        // redirect sesuai role
-        if ($user->role === 'admin_seller') {
-            return redirect()->route('dashboard.home.seller');
-        } elseif ($user->role === 'user') {
-            return redirect()->route('dashboard.home.user');
+        switch ($user->role) 
+        {
+            case 'admin_seller':
+                return redirect()->route('dashboard.home.seller', ['account_code' => $store->account_code]);
+
+            case 'user':
+                return redirect()->route('dashboard.home.user',['account_code' => $store->account_code]);
+                
+            default:
+                return redirect()->route('home');
         }
-
-        return redirect()->route('dashboard.home.user');
     }
-    public function login_seller(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'account_code' => 'required|string',
-            'password' => 'required|string',
-        ]);
-
-        // cari seller account sesuai input
-        $seller = SellerAccount::where('account_code', $request->account_code)->first();
-
-        if (!$seller) {
-            return back()->with('error', 'Invalid credentials');
-        }
-
-        // cari user berdasarkan username + seller_account_id
-        $user = User::where('username', $request->username)
-                    ->where('seller_account_id', $seller->id)
-                    ->first();
-
-        // cek user + password
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return back()->with('error', 'Invalid credentials');
-        }
-
-        // login manual pakai Auth
-        Auth::login($user);
-
-        // redirect sesuai role
-        if ($user->role === 'admin_seller') {
-            return redirect()->route('dashboard.home.seller');
-        } elseif ($user->role === 'user') {
-            return redirect()->route('dashboard.home.user');
-        }
-
-        return redirect()->route('home');
-    }
-
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        $account_code = null;
+
+        if ($user && $user->store_id) {
+            $seller = \App\Models\Store::find($user->store_id);
+            $account_code = $seller?->account_code; // safe navigation
+        }
+
         // Logout user
         Auth::logout();
 
@@ -115,8 +98,15 @@ class AuthController extends Controller
         // Regenerate CSRF token
         $request->session()->regenerateToken();
 
-        // Redirect ke login page
-        return redirect()->route('login.page.seller');
+        // Redirect ke login page toko yg sesuai
+        if ($account_code) {
+            return redirect()->route('login.page', ['account_code' => $account_code]);
+        }
+
+        // fallback kalau gak ada account_code
+        return redirect('/');
     }
+
+    // =====================DONE
 
 }
