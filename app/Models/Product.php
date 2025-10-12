@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
     use HasFactory;
+
     public $timestamps = false;
 
-        protected $fillable = [
+    protected $fillable = [
         'image',
         'name',
         'description',
@@ -21,9 +23,19 @@ class Product extends Model
         'modified_date',
         'created_by',
         'created_date',
+        'slug',
     ];
 
-    public function Store()
+    public static function generateUniqueSlug()
+    {
+        do {
+            $slug = Str::random(15);
+        } while (self::where('slug', $slug)->exists());
+
+        return $slug;
+    }
+
+    public function store()
     {
         return $this->belongsTo(Store::class);
     }

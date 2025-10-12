@@ -6,6 +6,10 @@
     <h1>Welcome Seller, {{ auth()->user()->name }}</h1>
     <p>Ini halaman dashboard khusus seller.</p>
 
+    <div>
+        <a href="{{ route('add.product.page', [$store->account_code]) }}">Add Product</a>
+    </div>
+
     <div id="alertBox"
         style="display:none; margin-bottom:15px; padding:10px; border:1px solid #ddd; border-radius:4px; font-size:14px;">
     </div>
@@ -28,7 +32,7 @@
                     <td>{{ $i + 1 }}</td>
                     <td>
                         <div class="img-box">
-                            <img src="{{ asset($p->image) }}" alt="{{ $p->name }}">
+                            <img src="{{ asset('storage/' . $p->image) }}" alt="Product Image">
                         </div>
                     </td>
                     <td>{{ $p->name }}</td>
@@ -40,8 +44,8 @@
                             Edit
                         </a>
 
-                        <form action="{{ route('products.destroy', $p->id) }}" method="POST" style="display:inline;"
-                            onsubmit="return confirm('Yakin mau hapus produk ini?')">
+                        <form action="{{ route('products.destroy', [$store->account_code, $p->slug]) }}" method="POST"
+                            style="display:inline;" onsubmit="return confirm('Yakin mau hapus produk ini?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-delete">Delete</button>

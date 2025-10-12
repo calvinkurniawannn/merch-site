@@ -31,20 +31,4 @@ class SellerController extends Controller
         return view('seller.product', compact('products', 'store'));
     }
 
-    // ======================== DONE
-
-
-
-
-
-
-    public function delete_Product($id)
-    {
-        $product = Product::findOrFail($id);
-        $product->delete();
-
-        return redirect()->route('seller.products')->with('success', 'Product deleted successfully.');
-    }
-
-
 }

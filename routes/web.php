@@ -11,7 +11,7 @@ Route::get('/{account_code}', [RoutingController::class, 'view_LoginPage'])
     ->name('login.page');
 
 
-Route::get('/', function () {
+Route::get('/calvinstore', function () {
     return redirect()->route('login.page');
 });
 
@@ -29,6 +29,7 @@ Route::post('/signup', [AuthController::class, 'signup'])->name('signup.post');
 // DASHBOARD SELLER
 Route::middleware(['role:admin_seller'])->group(function () {
     Route::get('/{account_code}/dashboard-seller', [SellerController::class, 'view_HomeSeller'])->name('dashboard.home.seller');
+    
     Route::get('/{account_code}/products', [SellerController::class, 'view_Product'])->name('seller.products');
 
     Route::get('/{account_code}/products/{slug}/edit-page', [ProductController::class, 'edit_Product'])
@@ -37,8 +38,15 @@ Route::middleware(['role:admin_seller'])->group(function () {
     Route::put('/{account_code}/products/{slug}', [ProductController::class, 'update_Product'])
         ->name('products.update');
 
-        // delete
-        Route::delete('/products/{slug}', [SellerController::class, 'delete_Product'])->name('products.destroy');
+    // delete
+    Route::delete('/{account_code}/products/delete/{slug}', [ProductController::class, 
+    'delete_Product'])->name('products.destroy');
+
+    Route::get('/{account_code}/add-product', [ProductController::class, 'add_Product_Page'])
+    ->name('add.product.page');
+
+    Route::post('/{account_code}/post-product', [ProductController::class, 'post_Product'])
+    ->name('post.product');
 });
 
 Route::middleware(['role:user'])->group(function () {

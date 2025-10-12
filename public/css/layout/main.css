@@ -1,0 +1,77 @@
+/* =============================
+   Global Base
+   ============================= */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafc;
+    color: #1f2937;
+    margin: 0;
+    padding: 0;
+}
+
+/* =============================
+   Layout
+   ============================= */
+.content-wrapper {
+    padding: 2rem;
+    margin-left: 250px; /* ubah kalau sidebar lo beda width */
+}
+
+/* =============================
+   Profile Section
+   ============================= */
+.profile-info {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-info p {
+    margin: 0;
+    font-weight: 500;
+}
+
+.profile-info button {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.profile-info button:hover {
+    background-color: #dc2626;
+}
+
+/* =============================
+   Utility
+   ============================= */
+.text-center {
+    text-align: center;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
