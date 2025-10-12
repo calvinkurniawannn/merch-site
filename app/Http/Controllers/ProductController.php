@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function add_Product_Page ($account_code){
+    public function add_Product_Page($account_code)
+    {
         $store = Store::where('account_code', $account_code)->firstOrFail();
 
         return view('seller.add_product_page', compact('store'));
@@ -21,34 +22,34 @@ class ProductController extends Controller
 
     public function post_product($account_code, Request $request)
     {
-            $store = Store::where('account_code', $account_code)->first();
-            $auth  = Auth::user();
+        $store = Store::where('account_code', $account_code)->first();
+        $auth  = Auth::user();
 
-            if (!$store || empty($store->account_code)) {
-                return back()->with('error', 'Store or account code not found.');
-            }
+        if (!$store || empty($store->account_code)) {
+            return back()->with('error', 'Store or account code not found.');
+        }
 
-            $validated = $request->validate([
-                'name'        => 'required|string|max:255',
-                'description' => 'required|string',
-                'price'       => 'required|numeric|min:0',
-                'quantity'    => 'required|integer|min:0',
-                'image'       => 'required|image|mimes:jpg,jpeg,png|max:2048',
-            ]);
+        $validated = $request->validate([
+            'name'        => 'required|string|max:255',
+            'description' => 'required|string',
+            'price'       => 'required|numeric|min:0',
+            'quantity'    => 'required|integer|min:0',
+            'image'       => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
 
-            if (!$request->hasFile('image')) {
-                return back()->with('error', 'No image file uploaded.');
-            }
+        if (!$request->hasFile('image')) {
+            return back()->with('error', 'No image file uploaded.');
+        }
 
-            // ✅ Nama file unik
-            $filename = $store->account_code .'/'.$store->account_code . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+        // ✅ Nama file unik
+        $filename = $store->account_code . '/' . $store->account_code . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
 
-            // ✅ Simpan langsung ke storage/app/public
-            $destinationPath = storage_path('app/public/'.$store->account_code);
-            
-            if (!File::exists($destinationPath)) {
+        // ✅ Simpan langsung ke storage/app/public
+        $destinationPath = storage_path('app/public/' . $store->account_code);
+
+        if (!File::exists($destinationPath)) {
             File::makeDirectory($destinationPath, 0755, true, true);
-            }
+        }
         $request->file('image')->move($destinationPath, $filename);
 
         // ✅ Path relatif dari public/storage
@@ -69,18 +70,17 @@ class ProductController extends Controller
             'slug'          => Product::generateUniqueSlug(),
         ]);
 
-        return redirect()->route('seller.products', $account_code)
-            ->with('success', 'Product "' . $product->name . '" added successfully.');
+        return redirect()->back()
+            ->with('success', 'Product added successfully!');
     }
-
 
     public function edit_Product($account_code, $slug)
     {
         $store = Store::where('account_code', $account_code)->firstOrFail();
 
         $product = Product::where('store_id', $store->id)
-                        ->where('slug', $slug)
-                        ->firstOrFail();
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         return view('seller.product_edit', compact('store', 'product'));
     }
@@ -139,22 +139,18 @@ class ProductController extends Controller
             ->with('success', 'Product updated successfully!');
     }
 
-    public function delete_Product($account_code,$slug)
-    {   
+    public function delete_Product($account_code, $slug)
+    {
         $store = Store::where('account_code', $account_code)->firstOrFail();
         $product = Product::where('slug', $slug)->firstOrFail();
-        
+
         $currImage = storage_path('app/public/' . $product->image);
         if (File::exists($currImage)) {
             File::delete($currImage);
         }
         $product->delete();
 
-        return redirect()->route('seller.products', ['account_code' => $store->account_code])
-            ->with('success', 'Product deleted successfully.');
-
+        return redirect()->back()
+            ->with('success', 'Product deleted successfully!');
     }
-
-
-
 }

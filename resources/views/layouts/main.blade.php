@@ -20,7 +20,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     {{-- ✅ Global CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/main.css') }}">
 
     {{-- ✅ Role-based CSS --}}
     @auth
@@ -41,30 +41,18 @@
     <div class="layout-container">
 
         {{-- ✅ Sidebar / Navigation --}}
-        @auth
-            @if (auth()->user()->role === 'admin_seller')
-                @include('navigation.seller')
-            @else
-                @include('navigation.user')
-            @endif
-        @endauth
-
-        {{-- ✅ Main Content Area --}}
-        <div class="content-wrapper">
-            {{-- ✅ Profile Section (optional) --}}
+        <div class="sidebar-navigation">
             @auth
-                <div class="profile-info">
-                    <p>Hi, {{ auth()->user()->name }}</p>
-                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit">
-                            <i class="fa-solid fa-right-from-bracket mr-1"></i> Logout
-                        </button>
-                    </form>
-                </div>
+                @if (auth()->user()->role === 'admin_seller')
+                    @include('navigation.seller')
+                @else
+                    @include('navigation.user')
+                @endif
             @endauth
+        </div>
 
-            {{-- ✅ Page Content --}}
+        {{-- ✅ Page Content --}}
+        <div class="main-content">
             @yield('content')
         </div>
     </div>

@@ -1,0 +1,157 @@
+/* ==============================
+   GENERAL LAYOUT
+============================== */
+.product-section {
+    background: #ffffff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: 'Inter', sans-serif;
+
+}
+
+.product-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.product-header h1 {
+    font-size: 22px;
+    color: #1e293b;
+    font-weight: 600;
+    margin: 0;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+/* ==============================
+   TABLE STYLE
+============================== */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    color: #334155;
+}
+
+.product-table th,
+.product-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.product-table th {
+    background-color: #f8fafc;
+    font-weight: 600;
+    color: #1e293b;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.product-table tr:hover {
+    background-color: #f1f5f9;
+    transition: 0.2s ease-in-out;
+}
+
+.product-table tr:last-child td {
+    border-bottom: none;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.no-data {
+    text-align: center;
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* ==============================
+   IMAGE BOX
+============================== */
+.img-box {
+    width: 65px;
+    height: 65px;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    margin: auto;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.1);
+}
+
+.img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.img-box:hover img {
+    transform: scale(1.15);
+}
+
+/* ==============================
+   BUTTONS
+============================== */
+.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn i {
+    font-size: 13px;
+}
+
+.btn-add {
+    background-color: #10b981;
+    color: #fff;
+}
+
+.btn-add:hover {
+    background-color: #059669;
+}
+
+.btn-edit {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.btn-edit:hover {
+    background-color: #2563eb;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+}
+
+.inline-form {
+    display: inline;
+}
+
+

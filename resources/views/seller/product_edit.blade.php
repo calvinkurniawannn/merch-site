@@ -2,81 +2,90 @@
 
 @section('title', 'Edit Product')
 
+@section('style')
+    <link rel="stylesheet" href="{{ asset('css/seller/product_edit.css') }}">
+@endsection
+
 @section('content')
-    <h1>Edit Product: {{ $product->name }}</h1>
-
-    {{-- Alert Success --}}
-    @if (session('success'))
-        <div id="successAlert"
-            style="padding:10px; background:#d4edda; border:1px solid #c3e6cb; color:#155724; 
-                    margin-bottom:15px; border-radius:4px; opacity:1; transition: opacity 0.5s ease;">
-            {{ session('success') }}
+    <section class="edit-section">
+        <div class="edit-header">
+            <h1><i class="fa-solid fa-pen-to-square"></i> Edit Product</h1>
+            <p class="subtitle">Update detail produk kamu di bawah ini</p>
         </div>
 
-        <script>
-            setTimeout(function() {
-                let alertBox = document.getElementById("successAlert");
-                alertBox.style.opacity = "0";
-                setTimeout(function() {
-                    window.location.href =
-                        "{{ route('seller.products', ['account_code' => $store->account_code]) }}";
-                }, 500);
-            }, 1000);
-        </script>
-    @endif
-
-    <form action="{{ route('products.update', [$store->account_code, $product->slug]) }}" method="POST"
-        enctype="multipart/form-data">
-        @csrf
-        @method('PUT')
-
-        {{-- Gambar Produk --}}
-        <div class="mb-3">
-            <label class="form-label">Product Image</label>
-            <input type="file" name="image" id="imageInput" class="form-control" accept="image/*">
-
-            <div class="mt-3 text-center">
-                @if ($product->image)
-                    <img id="previewImage" src="{{ asset('storage/' . $product->image) }}" alt="Current Product Image"
-                        style="max-height: 200px; border:1px solid #ccc; border-radius:10px; padding:5px;">
-                @else
-                    <img id="previewImage" src="#" alt="Image Preview"
-                        style="display:none; max-height: 200px; border:1px solid #ccc; border-radius:10px; padding:5px;">
-                @endif
-            </div>
-        </div>
-
-        {{-- Data Produk --}}
-        <div class="mb-3">
-            <label class="form-label">Product Name</label>
-            <input type="text" name="name" value="{{ old('name', $product->name) }}" class="form-control" required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea name="description" class="form-control" rows="4" required>{{ old('description', $product->description) }}</textarea>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Price</label>
-                <input type="number" name="price" value="{{ old('price', $product->price) }}" step="0.01"
-                    class="form-control" required>
+        {{-- ✅ Alert Success --}}
+        @if (session('success'))
+            <div id="successAlert" class="alert-success">
+                {{ session('success') }}
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Quantity</label>
-                <input type="number" name="quantity" value="{{ old('quantity', $product->quantity) }}" min="0"
-                    class="form-control" required>
+            <script>
+                setTimeout(() => {
+                    let alertBox = document.getElementById("successAlert");
+                    alertBox.style.opacity = "0";
+                    setTimeout(() => {
+                        window.location.href =
+                            "{{ route('seller.products', ['account_code' => $store->account_code]) }}";
+                    }, 600);
+                }, 1000);
+            </script>
+        @endif
+
+        <form action="{{ route('products.update', [$store->account_code, $product->slug]) }}" method="POST"
+            enctype="multipart/form-data" class="edit-form">
+            @csrf
+            @method('PUT')
+
+            {{-- ✅ Gambar Produk --}}
+            <div class="form-group">
+                <label for="imageInput">Product Image</label>
+                <input type="file" name="image" id="imageInput" accept="image/*">
+
+                <div class="image-preview">
+                    <img id="previewImage" src="{{ $product->image ? asset('storage/' . $product->image) : '#' }}"
+                        alt="Product Image" style="{{ $product->image ? '' : 'display:none;' }}">
+                </div>
             </div>
-        </div>
 
-        <div class="text-end">
-            <button type="submit" class="btn btn-success px-4">Update Product</button>
-        </div>
-    </form>
+            {{-- ✅ Nama & Deskripsi --}}
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" name="name" value="{{ old('name', $product->name) }}" required>
+            </div>
 
-    {{-- Script preview gambar --}}
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4" required>{{ old('description', $product->description) }}</textarea>
+            </div>
+
+            {{-- ✅ Harga & Kuantitas --}}
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Price (Rp)</label>
+                    <input type="number" name="price" value="{{ old('price', $product->price) }}" step="0.01"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" name="quantity" value="{{ old('quantity', $product->quantity) }}" min="0"
+                        required>
+                </div>
+            </div>
+
+            {{-- ✅ Submit --}}
+            <div class="form-footer">
+                <a href="{{ route('seller.products', $store->account_code) }}" class="btn btn-cancel">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i> Update Product
+                </button>
+            </div>
+        </form>
+    </section>
+
+    {{-- ✅ Script Preview Image --}}
     <script>
         document.getElementById('imageInput').addEventListener('change', function(event) {
             const file = event.target.files[0];
@@ -89,6 +98,9 @@
                     preview.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                preview.src = '#';
             }
         });
     </script>

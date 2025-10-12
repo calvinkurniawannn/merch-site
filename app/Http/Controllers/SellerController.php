@@ -19,7 +19,9 @@ class SellerController extends Controller
             abort(403, '404 No Access');
         }
 
-        return view('dashboard.home-seller', compact('user', 'store'));
+        $totalProduct = Product::where('store_id', $store->id)->count();
+
+        return view('dashboard.home-seller', compact('user', 'store', 'totalProduct'));
     }
 
     public function view_Product($account_code)
@@ -30,5 +32,4 @@ class SellerController extends Controller
 
         return view('seller.product', compact('products', 'store'));
     }
-
 }
