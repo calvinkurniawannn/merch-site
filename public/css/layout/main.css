@@ -7,14 +7,47 @@ body {
     color: #1f2937;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 /* =============================
-   Layout
+   Layout Container (Sidebar + Content)
+   ============================= */
+.layout-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* =============================
+   Sidebar (20%)
+   ============================= */
+.sidebar {
+    width: 20%;
+    min-width: 240px; /* batas minimum biar sidebar nggak kekecilan */
+    max-width: 300px; /* batas maksimum */
+    background-color: #1e293b;
+    color: #f1f5f9;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    transition: width 0.3s ease;
+    z-index: 100;
+}
+
+/* =============================
+   Content Wrapper (80%)
    ============================= */
 .content-wrapper {
+    width: 80%;
+    margin-left: 20%;
+    background-color: #f8fafc;
     padding: 2rem;
-    margin-left: 250px; /* ubah kalau sidebar lo beda width */
+    transition: all 0.3s ease;
+    overflow-y: auto;
 }
 
 /* =============================
@@ -32,6 +65,7 @@ body {
 .profile-info p {
     margin: 0;
     font-weight: 500;
+    color: #1f2937;
 }
 
 .profile-info button {
@@ -41,7 +75,7 @@ body {
     padding: 5px 10px;
     border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s ease;
 }
 
 .profile-info button:hover {
@@ -49,7 +83,7 @@ body {
 }
 
 /* =============================
-   Utility
+   Utility Classes
    ============================= */
 .text-center {
     text-align: center;
@@ -64,7 +98,7 @@ body {
     padding: 0.5rem 1rem;
     border-radius: 6px;
     font-weight: 500;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
 }
 
 .btn-primary {
@@ -74,4 +108,75 @@ body {
 
 .btn-primary:hover {
     background-color: #2563eb;
+}
+
+/* =============================
+   Responsive Layout
+   ============================= */
+@media (max-width: 1280px) {
+    .sidebar {
+        width: 250px;
+    }
+
+    .content-wrapper {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+    }
+
+    .content-wrapper {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        margin-left: 0;
+        padding: 1.5rem;
+    }
+
+    .profile-info {
+        position: relative;
+        top: 0;
+        right: 0;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+    }
+}
+
+/* =============================
+   Scrollbar Styling (Optional)
+   ============================= */
+.sidebar::-webkit-scrollbar,
+.content-wrapper::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.content-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(107, 114, 128, 0.4);
+    border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover,
+.content-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(107, 114, 128, 0.6);
 }
