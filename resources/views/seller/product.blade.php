@@ -66,7 +66,7 @@
                                 </a>
                                 <form action="{{ route('products.destroy', [$store->account_code, $p->slug]) }}"
                                     method="POST" class="inline-form"
-                                    onsubmit="return confirm('Yakin mau hapus produk ini?')">
+                                    onsubmit="return confirm('Apakah kamu yakin ingin menghapus produk ini?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-delete">

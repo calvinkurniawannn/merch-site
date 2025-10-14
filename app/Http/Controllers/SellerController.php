@@ -32,4 +32,10 @@ class SellerController extends Controller
 
         return view('seller.product', compact('products', 'store'));
     }
+
+    public function view_PreOrder($account_code)
+    {
+        $store = Store::where('account_code', $account_code)->first();
+        return view('seller.preorder', compact('store'));
+    }
 }

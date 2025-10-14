@@ -20,6 +20,12 @@
                 <i class="fa-solid fa-box"></i> Produk
             </a>
         </li>
+        <li>
+            <a href="{{ route('seller.preorder.page', $store->account_code) }}"
+                class="{{ request()->routeIs('seller.preoder.page') ? 'active' : '' }}">
+                <i class="fa-solid fa-box"></i> Pre-Order
+            </a>
+        </li>
 
         <li>
             <a href="" class="{{ request()->routeIs('seller.orders') ? 'active' : '' }}">

@@ -29,7 +29,8 @@ Route::post('/signup', [AuthController::class, 'signup'])->name('signup.post');
 // DASHBOARD SELLER
 Route::middleware(['role:admin_seller'])->group(function () {
     Route::get('/{account_code}/dashboard-seller', [SellerController::class, 'view_HomeSeller'])->name('dashboard.home.seller');
-    
+
+    //PRODUCTS ------------------------------------
     Route::get('/{account_code}/products', [SellerController::class, 'view_Product'])->name('seller.products');
 
     Route::get('/{account_code}/products/{slug}/edit-page', [ProductController::class, 'edit_Product'])
@@ -39,14 +40,22 @@ Route::middleware(['role:admin_seller'])->group(function () {
         ->name('products.update');
 
     // delete
-    Route::delete('/{account_code}/products/delete/{slug}', [ProductController::class, 
-    'delete_Product'])->name('products.destroy');
+    Route::delete('/{account_code}/products/delete/{slug}', [
+        ProductController::class,
+        'delete_Product'
+    ])->name('products.destroy');
 
     Route::get('/{account_code}/add-product', [ProductController::class, 'add_Product_Page'])
-    ->name('add.product.page');
+        ->name('add.product.page');
 
     Route::post('/{account_code}/post-product', [ProductController::class, 'post_Product'])
-    ->name('post.product');
+        ->name('post.product');
+
+
+
+    //PREORDER ------------------------------------
+    Route::get('/{account_code}/preorder', [SellerController::class, 'view_Preorder'])
+        ->name('seller.preorder.page');
 });
 
 Route::middleware(['role:user'])->group(function () {
