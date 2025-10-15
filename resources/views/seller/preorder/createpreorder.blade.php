@@ -54,7 +54,6 @@
                     <option value="Female">Female</option>
                 </select>
             </div>
-
             <div class="form-group">
                 <label>Phone</label>
                 <input type="text" name="phone" inputmode="numeric" pattern="[0-9]*" maxlength="15"
