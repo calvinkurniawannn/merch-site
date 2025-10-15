@@ -1,15 +1,18 @@
 @extends('layouts.main')
 
-@section('title', 'Master Products')
+@section('title', $store->store_name . ' | List Products')
 
 @section('style')
     <link rel="stylesheet" href="{{ asset('css/seller/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/section.css') }}">
 @endsection
 
 @section('content')
-    <section class="product-section">
-        <div class="product-header">
+    <section class="general-section">
+        <div class="section-header">
             <h1>📦 Master Products</h1>
+        </div>
+        <div class="section-header-2">
             <a href="{{ route('add.product.page', [$store->account_code]) }}" class="btn btn-add">
                 + Add Product
             </a>

@@ -29,12 +29,13 @@ return new class extends Migration
             // profile info
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
+            $table->string('gender')->nullable();
 
             // if user is admin_seller, link to seller_account
             $table->unsignedBigInteger('store_id')->nullable();
             $table->foreign('store_id')
-            ->references('id')->on('stores')
-            ->onDelete('cascade');
+                ->references('id')->on('stores')
+                ->onDelete('cascade');
 
             // audit fields
             $table->string('modified_by')->nullable();
@@ -43,8 +44,7 @@ return new class extends Migration
             $table->timestamp('created_date');
 
             $table->rememberToken();
-            });
-
+        });
     }
 
 

@@ -1,14 +1,17 @@
 @extends('layouts.main')
 
-@section('title', 'Add New Product')
+@section('title', $store->store_name . ' | Add New Product')
 
 @section('style')
     <link rel="stylesheet" href="{{ asset('css/seller/add_product.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/section.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/form.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/footer-form.css') }}">
 @endsection
 
 @section('content')
-    <section class="add-section">
-        <div class="add-header">
+    <section class="general-section">
+        <div class="section-header">
             <h1><i class="fa-solid fa-circle-plus"></i> Add New Product</h1>
             <p class="subtitle">Tambahkan produk baru ke toko kamu di sini</p>
         </div>

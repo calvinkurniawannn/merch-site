@@ -54,8 +54,10 @@ Route::middleware(['role:admin_seller'])->group(function () {
 
 
     //PREORDER ------------------------------------
-    Route::get('/{account_code}/preorder', [SellerController::class, 'view_Preorder'])
-        ->name('seller.preorder.page');
+    Route::get('/{account_code}/preorderlist', [SellerController::class, 'view_PreOrderList'])
+        ->name('seller.preorder.preorderlist');
+    Route::get('/{account_code}/preordercreate', [SellerController::class, 'view_PreOrderCreate'])
+        ->name('seller.preorder.create');
 });
 
 Route::middleware(['role:user'])->group(function () {

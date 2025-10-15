@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Seller Dashboard')
+@section('title', $store->store_name . ' | Dashboard')
 
 @section('style')
     <link rel="stylesheet" href="{{ asset('css/dashboard/home-seller.css') }}">
