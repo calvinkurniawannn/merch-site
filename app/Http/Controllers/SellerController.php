@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Store;
 use App\Models\Product;
+use Illuminate\Support\Carbon;
+use App\Models\PreOrderCampaign;
 use Illuminate\Http\Client\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -33,11 +35,23 @@ class SellerController extends Controller
         return view('seller.product', compact('products', 'store'));
     }
 
+
     public function view_PreOrderList($account_code)
     {
         $store = Store::where('account_code', $account_code)->first();
-        return view('seller.preorder.preorderlist', compact('store'));
+
+        $poform = PreOrderCampaign::all()->map(function ($item) {
+            $item->start_date = Carbon::parse($item->start_date)->format('j-M-Y');
+            $item->end_date   = Carbon::parse($item->end_date)->format('j-M-Y');
+
+            // tambahkan properti baru buat status
+            $item->status_label = ($item->status == 1) ? 'Active' : 'Non Active';
+
+            return $item;
+
+                return view('seller.preorder.preorderlist', compact('store','poform'));
     }
+
 
     public function view_PreOrderCreate($account_code)
     {

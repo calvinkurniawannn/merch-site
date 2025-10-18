@@ -9,6 +9,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PreOrderCampaign extends Model
 {
     use HasFactory;
+    
+    public $timestamps = false;
+
+    protected $fillable = [
+        'banner',
+        'title',
+        'description',
+        'start_date',
+        'end_date',
+        'account_code',
+        'modified_by',
+        'modified_date',
+        'created_by',
+        'created_date',
+        'slug',
+    ];
 
     public static function generateUniqueSlug()
     {

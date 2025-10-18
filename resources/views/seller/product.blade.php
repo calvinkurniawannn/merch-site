@@ -4,6 +4,7 @@
 
 @section('style')
     <link rel="stylesheet" href="{{ asset('css/seller/product.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/layout/table.css') }}">
     <link rel="stylesheet" href="{{ asset('css/layout/section.css') }}">
 @endsection
 
@@ -37,7 +38,7 @@
         @endif
 
         <div class="table-container">
-            <table class="product-table">
+            <table class="item-table">
                 <thead>
                     <tr>
                         <th>No</th>

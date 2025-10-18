@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PreOrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoutingController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\UserController;
+use App\Models\PreOrderCampaign;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/{account_code}', [RoutingController::class, 'view_LoginPage'])
@@ -58,6 +60,14 @@ Route::middleware(['role:admin_seller'])->group(function () {
         ->name('seller.preorder.preorderlist');
     Route::get('/{account_code}/preordercreate', [SellerController::class, 'view_PreOrderCreate'])
         ->name('seller.preorder.create');
+    Route::post('/{account_code}/post-poform', [PreOrderController::class, 'post_PO'])
+        ->name('post.poform');
+
+    // delete
+    Route::delete('/{account_code}/poform/delete/{slug}', [
+        PreOrderController::class,
+        'delete_PO'
+    ])->name('poform.destroy');
 });
 
 Route::middleware(['role:user'])->group(function () {

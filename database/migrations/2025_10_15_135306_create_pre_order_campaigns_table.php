@@ -12,23 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pre_order_campaigns', function (Blueprint $table) {
-            $table->id('campaign_id');
+            $table->id();
 
             // Relasi ke seller
             $table->string('account_code')->nullable();
             $table->foreign('account_code')->references('account_code')->on('stores')->onDelete('cascade');
 
             // Informasi campaign
+            $table->string('banner')->nullable();
             $table->string('title', 150);
             $table->text('description')->nullable();
             $table->string('slug', 100)->unique();
 
             // Tanggal periode preorder
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
 
             // Status campaign
-            $table->enum('status', ['Active', 'Closed'])->default('Active');
+            $table->integer('status')->default(1);
 
             $table->string('modified_by')->nullable();
             $table->timestamp('modified_date')->nullable();

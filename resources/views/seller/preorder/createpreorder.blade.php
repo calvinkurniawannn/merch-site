@@ -15,7 +15,7 @@
     <section class="general-section">
         <div class="section-header">
             <h1><i class="fa-solid fa-circle-plus"></i> Add New Pre Order Form</h1>
-            <p class="subtitle">Tambahkan pre order baru di sini</p>
+            <p class="subtitle">Tambahkan form pre order baru di sini</p>
         </div>
 
         {{-- ✅ Alert Success --}}
@@ -30,50 +30,68 @@
                     alertBox.style.opacity = "0";
                     setTimeout(() => {
                         window.location.href =
-                            "{{ route('seller.products', ['account_code' => $store->account_code]) }}";
+                            "{{ route('seller.preorder.preorderlist', ['account_code' => $store->account_code]) }}";
                     }, 600);
                 }, 1000);
             </script>
         @endif
 
-        <form action="" ethod="POST" enctype="multipart/form-data" class="add-form">
-            {{-- ✅ Upload Gambar --}}
+        <form action="{{ route('post.poform', $store->account_code) }}" method="POST" enctype="multipart/form-data"
+            class="add-form">
+            @csrf
             <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" required>
+                <label>Banner Image</label>
+                <input type="file" name="banner" id="imageInput" accept="image/*">
+
+                <div class="image-preview">
+                    <img id="previewImage" src="#" alt="Preview" style="display:none;">
+                </div>
             </div>
             <div class="form-group">
-                <label>Address</label>
-                <input type="textarea" name="address" required>
+                <label>Title</label>
+                <input type="text" name="title" required>
             </div>
             <div class="form-group">
-                <label for="gender">Gender</label>
-                <select name="gender" id="gender" required>
-                    <option value="" disabled selected>-- Select Gender --</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
+                <label>Description</label>
+                <input type="textarea" name="description" required>
             </div>
             <div class="form-group">
-                <label>Phone</label>
-                <input type="text" name="phone" inputmode="numeric" pattern="[0-9]*" maxlength="15"
-                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" required>
-            </div>
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" required>
+                <label>Date</label>
+                <div class="form-input">
+                    <input class="date" type="date" name ="start_date" required>
+                    <input class="date" type="date" name ="end_date" required>
+                </div>
             </div>
 
+            <div class="form-footer">
+                <a href="{{ route('seller.preorder.preorderlist', $store->account_code) }}" class="btn btn-cancel">
+                    <i class="fa-solid fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="btn btn-save">
+                    <i class="fa-solid fa-floppy-disk"></i> Create Form
+                </button>
+            </div>
         </form>
 
-
-        <div class="form-footer">
-            <a href="{{ route('seller.preorder.preorderlist', $store->account_code) }}" class="btn btn-cancel">
-                <i class="fa-solid fa-arrow-left"></i> Back
-            </a>
-            <button type="submit" class="btn btn-save">
-                <i class="fa-solid fa-floppy-disk"></i> Create Form
-            </button>
-        </div>
     </section>
+
+    {{-- ✅ Preview Gambar --}}
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('previewImage');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.style.display = 'block';
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                preview.src = '#';
+            }
+        });
+    </script>
 @endsection

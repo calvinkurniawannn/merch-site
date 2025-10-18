@@ -1,26 +1,4 @@
 
-/* ==============================
-   IMAGE PREVIEW
-============================== */
-.image-preview {
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
-}
-
-.image-preview img {
-    max-height: 200px;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    padding: 6px;
-    background: #f8fafc;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-.image-preview img:hover {
-    transform: scale(1.05);
-}
 
 /* ==============================
    FORM ROW
