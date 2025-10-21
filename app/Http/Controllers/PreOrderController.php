@@ -2,15 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\PreOrderCampaign;
 use App\Models\Store;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\PreOrderCampaign;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class PreOrderController extends Controller
 {
+    public function view_PreOrderForm($account_code, $slug)
+    {
+
+        $store = Store::where('account_code', $account_code)->first();
+        $preorderform = PreOrderCampaign::where([
+            ['account_code', '=', $store->account_code],
+            ['slug', '=', $slug],
+        ])->first();
+
+        $products = Product::where('store_id', $store->id)->get();
+
+        if (!$preorderform) {
+            abort(403, '404 No Access');
+        }
+
+        return view('seller.preorder.preorderform', compact('store', 'preorderform', 'products'));
+    }
+
     public function post_PO($account_code, Request $request)
     {
         $store = Store::where('account_code', $account_code)->first();
@@ -30,7 +49,7 @@ class PreOrderController extends Controller
         ], [
             'start_date.required'    => 'Tanggal mulai wajib diisi.',
             'end_date.required'      => 'Tanggal berakhir wajib diisi.',
-            'end_date.after_or_equal'=> 'Tanggal berakhir tidak boleh lebih awal dari tanggal mulai.',
+            'end_date.after_or_equal' => 'Tanggal berakhir tidak boleh lebih awal dari tanggal mulai.',
         ]);
 
         // ✅ Simpan banner jika ada
@@ -69,18 +88,18 @@ class PreOrderController extends Controller
             ->with('success', 'Pre Order Form berhasil dibuat!');
     }
 
-    public function delete_PO($account_code,$slug)
+    public function delete_PO($account_code, $slug)
     {
-        $store = Store::where('account_code',$account_code)->firstOrFail();
+        $store = Store::where('account_code', $account_code)->firstOrFail();
         $poform = PreOrderCampaign::where('slug', $slug)->firstOrFail();
 
-        $currImage = storage_path('app/public/' .$store->account_code.'/banner/' . $poform->banner);
+        $currImage = storage_path('app/public/' . $store->account_code . '/banner/' . $poform->banner);
         if (File::exists($currImage)) {
             File::delete($currImage);
         }
         $poform->delete();
 
-        return redirect()->route('seller.preorder.preorderlist',['account_code' =>$store->account_code])
+        return redirect()->route('seller.preorder.preorderlist', ['account_code' => $store->account_code])
             ->with('success', 'Pre Order Form deleted successfully!');
     }
 }

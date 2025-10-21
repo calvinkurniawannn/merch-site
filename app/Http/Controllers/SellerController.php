@@ -40,7 +40,7 @@ class SellerController extends Controller
         $poform = PreOrderCampaign::where('account_code', $account_code)->get()->map(function ($item) {
             $item->start_date = Carbon::parse($item->start_date)->format('j-M-Y');
             $item->end_date = Carbon::parse($item->end_date)->format('j-M-Y');
-            $item->status_label = ($item->status == 1) ? 'Active' : 'Non Active';
+            $item->status = ($item->status == 1) ? 'Active' : 'Non Active';
             return $item;
         });
 

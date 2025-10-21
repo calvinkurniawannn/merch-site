@@ -27,14 +27,17 @@
             <script>
                 setTimeout(() => {
                     let alertBox = document.getElementById("successAlert");
+                    alertBox.style.transition = "opacity 0.6s ease";
                     alertBox.style.opacity = "0";
                     setTimeout(() => {
                         window.location.href =
                             "{{ route('seller.preorder.preorderlist', ['account_code' => $store->account_code]) }}";
                     }, 600);
-                }, 1000);
+                }, 2000); // ⏱️ show for 2 seconds before fade out
             </script>
         @endif
+
+
 
         <form action="{{ route('post.poform', $store->account_code) }}" method="POST" enctype="multipart/form-data"
             class="add-form">
@@ -58,10 +61,15 @@
             <div class="form-group">
                 <label>Date</label>
                 <div class="form-input">
-                    <input class="date" type="date" name ="start_date" required>
-                    <input class="date" type="date" name ="end_date" required>
+                    <input class="date" type="date" name="start_date" id="start_date" required>
+                    <input class="date" type="date" name="end_date" id="end_date" required>
                 </div>
+                {{-- inline validation message --}}
+                <small id="dateError" style="color: red; display: none; margin-top: 4px;">
+                    ⚠️ End date cannot be earlier than start date.
+                </small>
             </div>
+
 
             <div class="form-footer">
                 <a href="{{ route('seller.preorder.preorderlist', $store->account_code) }}" class="btn btn-cancel">
@@ -77,21 +85,34 @@
 
     {{-- ✅ Preview Gambar --}}
     <script>
-        document.getElementById('imageInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            const preview = document.getElementById('previewImage');
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        const dateError = document.getElementById('dateError');
+        const form = document.querySelector('.add-form');
 
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.style.display = 'block';
-                    preview.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+        function validateDates() {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            if (startDateInput.value && endDateInput.value && endDate < startDate) {
+                dateError.style.display = 'block';
+                endDateInput.style.borderColor = 'red';
+                return false;
             } else {
-                preview.style.display = 'none';
-                preview.src = '#';
+                dateError.style.display = 'none';
+                endDateInput.style.borderColor = '';
+                return true;
+            }
+        }
+
+        startDateInput.addEventListener('change', validateDates);
+        endDateInput.addEventListener('change', validateDates);
+
+        form.addEventListener('submit', function(e) {
+            if (!validateDates()) {
+                e.preventDefault();
             }
         });
     </script>
+
 @endsection
