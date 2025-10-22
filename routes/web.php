@@ -71,7 +71,7 @@ Route::middleware(['role:admin_seller'])->group(function () {
 
 
     Route::get('/{account_code}/preorderform/{slug}', [PreOrderController::class, 'view_PreOrderForm'])
-        ->name('seller.preorder.create');
+        ->name('seller.preorder.preorderform');
 });
 
 Route::middleware(['role:user'])->group(function () {

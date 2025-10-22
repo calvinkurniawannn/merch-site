@@ -45,8 +45,7 @@
             @foreach ($products as $p)
                 <div class="product-item" data-product-id="{{ $p->id }}">
                     <div class="product-info">
-                        <img src="{{ asset('storage/' . $store->account_code . '/images/products/' . $p->image) }}"
-                            alt="{{ $p->name }}">
+                        <img src="{{ asset('storage/' . $p->image) }}" alt="{{ $p->name }}">
                         <div>
                             <h3>{{ $p->name }}</h3>
                             <p class="price">Rp {{ number_format($p->price, 0, ',', '.') }}</p>
